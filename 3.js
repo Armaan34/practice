@@ -1,21 +1,21 @@
-var cars = [ "Saab", "Volvo", "bMW", "Audi"]
-var arr = ["Abc0", "ABc", "BBc","AAA"];
+const person = {
+  firstName: "Ateeq",
+  lastName: "Uddin",
+  age: 30,
+  bio: function () {
+    return {
+      aa: 1,
+      bb: 2,
+      cc: function () {
+        console.log(this);
+      },
+    };
+  },
+  test: function () {
+    console.log(this);
+  },
+};
 
-cars.sort()
-console.log(cars);
-
-arr.sort()
-console.log(arr);
-
-var nums = [15, 3, 11, 25, 46];
-nums.sort()
-console.log(nums);
-
-var nums = [15, 3, 11, 25, 46];
-nums.sort((a,b)=> a-b)
-nums.sort((a,b)=> b-a)
-//random
-nums.sort(() => {
-    return Math.random() - 0.5
-});
-console.log(nums)
+console.log(this);
+person.bio().cc();
+person.test()
