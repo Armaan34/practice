@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 id="hello"> Hello to DOM </h1>
+    <p class="asd">Lorem ipsum dolor sit amet.</p>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, quos.</p>
+    <input type="button" value="click">
+</body>
+
+<script>
+    // console.log(document.getElementsByTagName("h1"))
+    // console.log(document.getElementsByClassName("asd"));
+    // console.log(document.getElementsByTagName("p"));
+
+    // console.log(document.getElementById("h1"))
+
+    // console.log(document.querySelector("#hello"))
+    // console.log(document.querySelectorAll("p"));
+
+    let element = document.querySelector("h1")
+    
+    element.innerHTML = element.innerHTML + "This is changed <em>Emphasis</em>"
+</script>
+
+</html>
