@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Hunt Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <center>
+        <section class="score-card">
+            <h1>Hey <span id="fname"></span></h1>
+            <h1>Attempts : <span id="score">0</span></h1>
+        </section>
+        <table id="myTable">
+
+
+        </table>
+    </center>
+    
+</body>
+
+<script>
+
+    if(!localStorage.getItem("leaderboard")){
+        localStorage.setItem('leaderboard' , JSON.stringify([]))
+    }
+    const leaderboard = JSON.parse(localStorage.getItem("leaderboard"))
+        console.log(leaderboard);
+    function main(){
+        let table = document.querySelector("#myTable");
+
+        let fname = prompt("Enter your name");
+        document.querySelector("#fname").innerText = fname
+
+        let data = []
+        for ( let i = 1 ; i <= 100 ; i++){
+            data.push(i)
+        }
+        data.sort((a, b) => 0.5 - Math.random())
+
+
+        let count = 0;
+        for(let i = 1 ; i <= 10 ; i++){
+            let tr = document.createElement("tr");
+
+            for(let j = 1 ; j <= 10 ; j++){
+                let td = document.createElement("td");
+                td.id = data[count];
+                count++
+                td.style.cursor = "pointer"
+                td.addEventListener("click", onClickHandler)
+
+                tr.appendChild(td)
+            }
+            table.appendChild(tr)
+        }
+    }
+    main()
+
+    function onClickHandler(e){
+        /* 
+            1. get access to the clicked value  -- done
+            2. check if the clicked value is a prime number, if so alert lost ( till here ) and refresh -- done
+            3. if the clicked value is 1, alert won  -- done
+            4. if clicked number was neither prime nor 1 , set its background color to yellow and also of all its multiples -- done
+
+            return location.reload()
+        */
+
+        const primes = [2,3,5,7,11,13]
+
+        let clickedNum = e.target.id
+
+        if(e.target.style.backgroundColor == "yellow") return
+
+
+        let score = document.querySelector("#score")
+
+        if(primes.includes(+clickedNum)){
+            document.getElementById(clickedNum).style.backgroundColor = "red"
+           setTimeout(()=>{
+            alert("You lost")
+            return location.reload()
+           }, 500)
+        }
+
+        if(+clickedNum == 1){
+            score.innerText = ++(score.innerText)
+            let userData = {
+                fname : document.getElementById("fname").innerText,
+                attempts : score.innerText 
+            }
+            doRanking(userData)
+            alert("You Won!!")
+            return location.href = "./leaderboard.html"
+        }
+
+        for(let i = clickedNum; i <= 100 ; i++){
+            if(i%clickedNum == 0){
+                document.getElementById(i).style.backgroundColor = "yellow"
+            }
+        }
+        
+        score.innerText = ++(score.innerText)
+    }
+
+    function doRanking(userData){
+        /* 
+            1. an object with same number of attempts exists in the leaderboard data
+            2. if it doesn't, create a new object and push it to array
+            3. if it does exist, push the name of the new winner to the players of that object
+            4. sort the data based on attempts
+            5. save the data in local storage 
+        */
+
+        const indexFound = leaderboard.findIndex(ele => ele.attempts == userData.attempts)
+
+        if(indexFound == -1){
+            leaderboard.push({attempts : userData.attempts , players : [userData.fname]})
+        }else{
+            leaderboard[indexFound].players.push(userData.fname)
+        }
+
+        leaderboard.sort((a,b)=> a.attempts - b.attempts)
+        localStorage.setItem("leaderboard", JSON.stringify(leaderboard))
+    }
+    /*
+    [
+    {
+        attempts : 1,
+        players : ["Kushal", "Jayesh"]
+    },
+    {
+        attempts : 3,
+        players : ["ateeq", "armaan"]
+    }
+    ]
+    */
+</script>
+</html>
